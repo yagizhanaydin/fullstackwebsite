@@ -1,0 +1,7 @@
+{
+  "kitaplar": [
+    { "id": 1, "adi": "Kitap 1" },
+    { "id": 2, "adi": "Kitap 2" },
+    { "id": 3, "adi": "Kitap 3" }
+  ]
+}

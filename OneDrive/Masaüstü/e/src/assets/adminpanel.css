@@ -1,0 +1,33 @@
+.image-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    width: 200px; /* Tüm image-container'ların genişliği aynı olacak */
+    height: 250px; /* Sabit yükseklik belirledik */
+    overflow: hidden; /* Taşan kısımları gizledik */
+}
+
+.admin-image {
+    width: 100%; /* Container genişliği kadar olacak */
+    height: 100%; /* Container yüksekliği kadar olacak */
+    object-fit: cover; /* Görsellerin orantılı şekilde kırpılmasını sağlar */
+    display: block;
+}
+
+.hover-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.image-container:hover .hover-text {
+    opacity: 1;
+}
