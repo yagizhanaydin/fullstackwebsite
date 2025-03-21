@@ -1,45 +1,23 @@
-/*https://tembo.io/docs/getting-started/postgres_guides/connecting-to-postgres-with-nodejs */
+import pkg from 'pg';
+const { Pool } = pkg;
 
-const { Client } = require('pg');
-
-// Database connection configuration
 const dbConfig = {
-	user: 'localhost',
-	password: '12345',
-	host: 'host',
-	port: '5432',
-	database: 'postgres',
+  user: 'postgres',
+  password: '12345',
+  host: 'localhost',
+  port: 5432,
+  database: 'myfullstackwebsite',
 };
 
-// Create a new PostgreSQL client
-const client = new Client(dbConfig);
+export const pool = new Pool(dbConfig);
 
-// Connect to the database
-client
-	.connect()
-	.then(() => {
-		console.log('Connected to PostgreSQL database');
+pool
+  .connect()
+  .then(() => {
+    console.log('Connected to PostgreSQL database');
+  })
+  .catch((err) => {
+    console.error('Error connecting to PostgreSQL database', err);
+  });
 
-		// Execute SQL queries here
-
-		client.query('SELECT * FROM employees', (err, result) => {
-			if (err) {
-				console.error('Error executing query', err);
-			} else {
-				console.log('Query result:', result.rows);
-			}
-
-			// Close the connection when done
-			client
-				.end()
-				.then(() => {
-					console.log('Connection to PostgreSQL closed');
-				})
-				.catch((err) => {
-					console.error('Error closing connection', err);
-				});
-		});
-	})
-	.catch((err) => {
-		console.error('Error connecting to PostgreSQL database', err);
-	});
+export default pool;

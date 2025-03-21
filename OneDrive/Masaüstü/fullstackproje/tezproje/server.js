@@ -1,14 +1,28 @@
-const express=require('express');
-const dotenv=require('dotenv');
-const  path=require('path');
-const cors=require('cors');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import userRoutes from './routes/userRoutes.js';  
 
 dotenv.config();
 
-const PORT=process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
+const server = express();
 
-const server=express();
+// CORS yapılandırması
+const frontbackendbaglanti = ['http://localhost:5173']; // Vite sunucusunun portu, backend'e istek atacak
 
-server.listen(PORT,()=>{
-    console.log('Server 3000 portunda çalışıyor');
+server.use(cors({
+  origin: frontbackendbaglanti,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
+server.use(express.json()); // JSON body parsing için
+
+// Kullanıcılar için route
+server.use('/api/users', userRoutes);
+
+// Sunucuyu başlat
+server.listen(PORT, () => {
+  console.log(`🚀 Sunucu ${PORT} portunda çalışıyor`);
 });

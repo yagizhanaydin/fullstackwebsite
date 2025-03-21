@@ -1,7 +1,9 @@
 import React from 'react'
 import axios from 'axios'
-import {useFormik} from 'formik'
+import { useFormik } from 'formik'
 import loginyup from '../schemas/Register'
+import { useNavigate } from 'react-router-dom'  // useNavigate için doğru import
+
 
 function Register() {
 
@@ -17,13 +19,19 @@ function Register() {
     validationSchema: loginyup,
     onSubmit: async (values) => {
       try {
-        const registeruser = await axios.post("/clientregister", values);
+        const registeruser = await axios.post("http://localhost:3000/api/users/clientregister", values);
+
         console.log('Kayıt başarılı', registeruser.data);
+        
+       
+        navigate("/verify");
       } catch (error) {
         console.log("Kayıt başarısız", error);
       }
     }
   });
+
+  const navigate = useNavigate();  
 
   return (
     <>
@@ -95,7 +103,7 @@ function Register() {
           <div>{userlogin.errors.passwordagain}</div>
         )}
 
-        <button type="submit">Üye ol</button>
+        <button type="submit">Üye ol</button> 
       </form>
     </>
   )
