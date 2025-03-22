@@ -31,25 +31,29 @@ const Secret_key = process.env.Secret_Key;
         return res.status(500).json({ message: "Sunucu hatası" });
     }
 };
-
- export const userloginpost = async (req, res) => {
+export const userloginpost = async (req, res) => {
     const { tel, password } = req.body;
 
     try {
+        // Kullanıcıyı veritabanında arama
         const logincheck = await pool.query("SELECT * FROM users WHERE tel = $1", [tel]);
 
         if (logincheck.rows.length === 0) {
+            console.error("Böyle bir kullanıcı bulunamadı:", tel); // Kullanıcı bulunamadığında hata logu
             return res.status(400).json({ error: "Böyle bir kullanıcı bulunamadı" });
         }
 
         const user = logincheck.rows[0];
+        
+        // Şifreyi kontrol etme
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (!passwordMatch) {
+            console.error("Şifre yanlış:", tel); // Şifre eşleşmiyorsa hata logu
             return res.status(400).json({ error: "Şifre yanlış" });
         }
 
-        // ✅ JWT oluştur
+        // JWT oluşturma
         const token = jwt.sign(
             { tel: user.tel, email: user.email, role: user.role },
             Secret_key,
@@ -59,9 +63,7 @@ const Secret_key = process.env.Secret_Key;
         return res.status(200).json({ message: "Giriş başarılı", token });
 
     } catch (error) {
-        console.error("Server hatası:", error);
-        return res.status(500).json({ error: "Server hatası" });
+        console.error("Server hatası:", error.message); // Genel server hatasını logla
+        return res.status(500).json({ error: "Server hatası", details: error.message });
     }
 };
-
-

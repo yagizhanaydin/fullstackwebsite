@@ -2,11 +2,12 @@ import React from 'react'
 import axios from 'axios'
 import { useFormik } from 'formik'
 import loginyup from '../schemas/Register'
-import { useNavigate } from 'react-router-dom'  // useNavigate için doğru import
+import { useNavigate } from 'react-router-dom';
 
 
 function Register() {
-
+  const navigate = useNavigate();
+  
   const userlogin = useFormik({
     initialValues: {
       tel: "",
@@ -31,7 +32,7 @@ function Register() {
     }
   });
 
-  const navigate = useNavigate();  
+
 
   return (
     <>
